@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script src="jquery.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="highcharts.js"></script>
+    <script src="export-data.js"></script>
+    <script src="accessibility.js"></script>
+    <script src="xuly.js"></script>
+
+    <link rel="stylesheet" href="/Style/chart.css">
+
+</head>
+
+<body>
+    <figure class="highcharts-figure">
+        <div id="container"></div>
+    </figure>
+    <script>
+        Highcharts.chart('container', {
+
+            chart: {
+                type: 'gauge',
+                plotBackgroundColor: null,
+                plotBackgroundImage: null,
+                plotBorderWidth: 0,
+                plotShadow: false,
+                height: '80%',
+                backgroundColor: '#434960',
+            },
+
+            title: {
+                text: 'Humidity 2',
+                style: {
+                    display:'flex',
+                    mt:'50px',
+                    color: '#EDC57E',
+                    fontSize: '30px'
+                },
+            },
+
+            pane: {
+                startAngle: -90,
+                endAngle: 90,
+                background: null,
+                center: ['50%', '75%'],
+                size: '100%'
+            },
+
+            // the value axis
+            yAxis: {
+                min: 0,
+                max: 100,
+                tickPixelInterval: 50,
+                tickPosition: 'inside',
+                tickColor:'none',
+                tickLength: 20,
+                tickWidth: 2,
+                minorTickInterval: null,
+                labels: {
+                    distance: 20,
+                    style: {
+                        fontSize: '20px',
+                        color: '#EDC57E'
+                    }
+                },
+                plotBands: [{
+                    from: 0,
+                    to: 10,
+                    color: '#bc2210',
+                    thickness: 20
+                },{
+                    from: 10,
+                    to: 20,
+                    color: '#ff0015',
+                    thickness: 20
+                },{
+                    from: 20,
+                    to: 30,
+                    color: '#ef830f',
+                    thickness: 20
+                }, {
+                    from: 30,
+                    to: 40,
+                    color: '#eac923', 
+                    thickness: 20
+                },{
+                    from: 40,
+                    to: 50,
+                    color: '#DDDF0D', 
+                    thickness: 20
+                },{
+                    from: 50,
+                    to: 60,
+                    color: '#DDDF0D', 
+                    thickness: 20
+                },{
+                    from: 60,
+                    to: 70,
+                    color: '#ffff33', 
+                    thickness: 20
+                }, {
+                    from: 70,
+                    to: 80,
+                    color: '#74cbe8',
+                    thickness: 20
+                },{
+                    from: 80,
+                    to: 90,
+                    color: '#4896ff',
+                    thickness: 20
+                },{
+                    from: 90,
+                    to: 100,
+                    color: '#385680',
+                    thickness: 20
+                },]
+            },
+
+            series: [{
+                name: 'Humi',
+                data: [50],
+                tooltip: {
+                    valueSuffix: ' % '
+                },
+                dataLabels: {
+                    format: '{y} %',
+                    borderWidth: 0,
+                    color: (
+                        Highcharts.defaultOptions.title &&
+                        Highcharts.defaultOptions.title.style &&
+                        Highcharts.defaultOptions.title.style.color
+                    ) || '#EDC57E',
+                    style: {
+                        fontSize: '25px'
+                    }
+                },
+                dial: {
+                    radius: '80%',
+                    backgroundColor: '#EDC57E',
+                    baseWidth: 12,
+                    baseLength: '0%',
+                    rearLength: '0%'
+                },
+                pivot: {
+                    backgroundColor: '#EDC57E',
+                    radius: 6
+                }
+
+            }]
+
+        });
+
+        // Add some life
+        setInterval(() => {
+            const chart = Highcharts.charts[0];
+            if (chart && !chart.renderer.forExport) {
+                const point = chart.series[0].points[0],
+                    inc = Math.round((Math.random() - 0.5) * 20);
+
+                let newVal = point.y + inc;
+                if (newVal < 0 || newVal > 100) {
+                    newVal = point.y - inc;
+                }
+
+                point.update(newVal);
+            }
+
+        }, 3000);
+    </script>
+</body>
+
+</html>

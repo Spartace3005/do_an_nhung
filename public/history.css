@@ -1,0 +1,120 @@
+body {
+  background-color: #434960;
+  color: #edc57e;
+}
+
+.title {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  font-size: 40px;
+  border-bottom: 1px solid silver;
+}
+
+.boxtitle {
+  font-size: medium;
+  padding: 20px 20px 20px 10px;
+  font-size: 125%;
+  border-top: aliceblue solid 2px;
+  border-bottom: aliceblue solid 2px;
+}
+
+.h-body,
+.h-header {
+  margin: auto;
+  display: flex;
+  font-weight: bolder;
+}
+
+.header-content {
+  padding: 10px 0px;
+  font-size: 130%;
+  border-bottom: 1px solid silver;
+}
+
+.h-id {
+  text-align: center;
+  width: 10%;
+  border-right: 1px solid silver;
+}
+
+.h-time {
+  text-align: center;
+  width: 22.5%;
+  border-right: 1px solid silver;
+}
+
+.h-temp {
+  text-align: center;
+  width: 22.5%;
+  border-right: 1px solid silver;
+}
+
+.h-humi {
+  text-align: center;
+  width: 22.5%;
+  border-right: 1px solid silver;
+}
+
+.h-light {
+  float: left;
+  text-align: center;
+  width: 22.5%;
+}
+
+/* --------table body------- */
+.id-content {
+    text-align: center;
+    width: 10%;
+    border-right: 1px solid silver;
+  }
+  
+  .time-content {
+    text-align: center;
+    width: 22.5%;
+    border-right: 1px solid silver;
+  }
+  
+  .temp-content {
+    text-align: center;
+    width: 22.5%;
+    border-right: 1px solid silver;
+  }
+  
+  .humi-content {
+    text-align: center;
+    width: 22.5%;
+    border-right: 1px solid silver;
+  }
+  
+  .light-content {
+    float: left;
+    text-align: center;
+    width: 22.5%;
+  }
+/* .id-content {
+  float: left;
+  text-align: center;
+  width: 10%;
+  border-right: 1px solid silver;
+}
+.time-content {
+  width: 22.5%;
+  float: left;
+}
+
+.temp-content,
+.humi-content {
+  width: 22.5%;
+  float: left;
+}
+.light-content{
+    width: 22.5%;
+    float: left;
+} */
+/* -------------------------- */
+
+.h-para {
+  padding: 10px 20px;
+  border-bottom: 1px solid rgb(177, 140, 73);
+}

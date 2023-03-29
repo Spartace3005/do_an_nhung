@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+
+    <script src="jquery.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="highcharts.js"></script>
+    <script src="export-data.js"></script>
+    <script src="accessibility.js"></script>
+    <script src="xuly.js"></script>
+
+    <!-- Liên kết đến các tệp CSS của Mui -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://unpkg.com/@mui/material@5.2.7/dist/mui.min.css" />
+
+    <!-- Đặt script liên kết đến các tệp JavaScript của Mui -->
+    <script src="https://unpkg.com/@mui/material@5.2.7/dist/mui.min.js"></script>
+
+
+    <link rel="stylesheet" href="/Style/home.css">
+    <title>Smart home</title>
+</head>
+
+<body>
+    <!-- <div class="title text-center" >
+        Điều khiển thiết bị
+    <div style="width: 66.5%;"></div>
+    <a href="/history" class="form">Lịch sử đo</a>
+    </div> -->
+    <button class="history" onclick="openModal1()">Sensor 1</button>
+    <div id="myModal1" class="modal">
+        <iframe class="history-chart" src="/sensor1" class="form"></iframe>
+    </div>
+    <button class="history" onclick="openModal2()">Sensor 2</button>
+    <div id="myModal2" class="modal">
+        <iframe class="history-chart" src="/sensor2" class="form"></iframe>
+    </div>
+    <button class="history" onclick="openModal3()">Chart 1</button>
+    <div id="myModal3" class="modal">
+        <iframe class="history-chart" src="/chart1" class="form"></iframe>
+    </div>
+    <button class="history" onclick="openModal4()">Chart 2</button>
+    <div id="myModal4" class="modal">
+        <iframe class="history-chart" src="/chart2" class="form"></iframe>
+    </div>
+
+    <div class="main-title">
+        SMART HOME CONTROL PANEL
+    </div>
+    <div class="collected-data">
+        <div class="sensors-1">
+            <div class="sensor-title">SENSOR 1</div>
+            <div class="dht11">
+                <div class="dht11-value left">
+                    <div class="data-title ">Temp</div>
+                    <div class="value">
+                        <p id="currentTemp1"></p>
+                        <p>°C</p>
+                    </div>
+                </div>
+                <div class="dht11-value">
+                    <div class="data-title">Humi</div>
+                    <div class="value">
+                        <p id="currentHumi1"></p>
+                        <p>%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="light-sensor">
+                <div class="data-title">Light</div>
+                <div class="value">
+                    <p id="currentLight1"></p>
+                    <p>Lux</p>
+                </div>
+            </div>
+        </div>
+        <div class="sensors-2">
+            <div class="sensor-title">SENSOR 2</div>
+            <div class="dht11">
+                <div class="dht11-value left">
+                    <div class="data-title ">Temp</div>
+                    <div class="value">
+                        <p id="currentTemp2"></p>
+                        <p>°C</p>
+                    </div>
+                </div>
+                <div class="dht11-value">
+                    <div class="data-title">Humi</div>
+                    <div class="value">
+                        <p id="currentHumi2"></p>
+                        <p> %</p>
+                    </div>
+                </div>
+            </div>
+            <div class="light-sensor">
+                <div class="data-title">Light</div>
+                <div class="value">
+                    <p id="currentLight2"> </p>
+                    <p>Lux</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="control">
+        <div class="led1">
+            <div class="sensor-title">LIGHT 1</div>
+            <div>
+                <div id="den-1" class="light-box appliances center ">
+                    <input class="checkbox" type="checkbox" value="1" name="" onclick="Light1();" id="checkBox_light_1">
+                    <img id="light1_img" src="off.svg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="led2">
+            <div class="sensor-title">LIGHT 2</div>
+            <div>
+                <div id="den-2" class="light-box appliances  center ">
+                    <input class="checkbox" type="checkbox" value="1" name="" onclick="Light2()" id="checkBox_light_2">
+                    <img id="light2_img" src="off.svg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // Modal
+        // Lấy tham chiếu đến Modal và các phần tử cần thiết
+        var modal1 = document.getElementById("myModal1");
+        var btn = document.getElementsByTagName("button")[0];
+        var span = document.getElementsByClassName("close")[0];
+
+        // Hàm mở Modal
+        function openModal1() {
+            modal1.style.display = "block";
+        }
+
+        // Hàm đóng Modal
+        function closeModal1() {
+            modal1.style.display = "none";
+        }
+
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Escape") {
+                closeModal1();
+            }
+        });
+
+        // Lấy tham chiếu đến Modal và các phần tử cần thiết
+        var modal2 = document.getElementById("myModal2");
+        var btn = document.getElementsByTagName("button")[0];
+        var span = document.getElementsByClassName("close")[0];
+
+        // Hàm mở Modal
+        function openModal2() {
+            modal2.style.display = "block";
+        }
+
+        // Hàm đóng Modal
+        function closeModal2() {
+            modal2.style.display = "none";
+        }
+
+        // Lấy tham chiếu đến Modal và các phần tử cần thiết
+        var modal3 = document.getElementById("myModal3");
+        var btn = document.getElementsByTagName("button")[0];
+        var span = document.getElementsByClassName("close")[0];
+
+        // Hàm mở Modal
+        function openModal3() {
+            modal3.style.display = "block";
+        }
+
+        // Hàm đóng Modal
+        function closeModal3() {
+            modal3.style.display = "none";
+        }
+
+        // Lấy tham chiếu đến Modal và các phần tử cần thiết
+        var modal4 = document.getElementById("myModal4");
+        var btn = document.getElementsByTagName("button")[0];
+        var span = document.getElementsByClassName("close")[0];
+
+        // Hàm mở Modal
+        function openModal4() {
+            modal4.style.display = "block";
+        }
+
+        // Hàm đóng Modal
+        function closeModal4() {
+            modal4.style.display = "none";
+        }
+
+        // Xử lý sự kiện khi nhấp vào nút đóng Modal hoặc bấm phím ESC
+        window.onclick = function (event) {
+            if (event.target == modal1) {
+                modal1.style.display = "none";
+            }
+            if (event.target == modal2) {
+                modal2.style.display = "none";
+            }
+            if (event.target == modal3) {
+                modal3.style.display = "none";
+            }
+            if (event.target == modal4) {
+                modal4.style.display = "none";
+            }
+        }
+
+    </script>
+</body>
+
+</html>

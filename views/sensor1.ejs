@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>History</title>
+    <meta charset="utf-8">
+    <script src="jquery.js"></script>
+    <script src="socket.io/socket.io.js"> </script>
+    <script src="xuly.js"></script>
+    <script src="highcharts.js"></script>
+    <script src="export-data.js"></script>
+    <script src="accessibility.js"></script>
+    <link rel="stylesheet" type="text/css" href="history.css">
+</head>
+
+<body>
+    <div class="title">Lịch sử đo cảm biến 1</div>
+    <div class="h-header">
+        <div class="header-content h-id">ID</div>
+        <div class="header-content h-time">Thời gian</div>
+        <div class="header-content h-temp">Nhiệt độ</div>
+        <div class="header-content h-humi">Độ ẩm</div>
+        <div class="header-content h-light">Ánh sáng</div>
+    </div>
+
+    <div id="h-body" class="h-body">
+        <div class="id-content" id="id-content-1">1</div>
+        <div class="time-content" id="time-content-1"></div>
+        <div class="temp-content" id="temp-content-1"></div>
+        <div class="humi-content" id="humi-content-1"> </div>
+        <div class="light-content" id="light-content-1"></div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,359 @@
+<div class="main-content">
+    <div class="left-block">
+        <div class="current-state">
+            <div class="parameters-display">
+                <div class="element-container">
+                    <div class="element-block" style="background-color: #ff7e6c;">
+                        <img class="element-icon" src="temprature.png" alt="">
+                        <h4 class="element-text">
+                            <p class="right5px">Nhiệt độ: </p>
+                            <p id="currentTemp"></p>
+                            <!--update data from xuly.js-->
+                            <p>°C</p>
+                        </h4>
+                    </div>
+                    <div class="element-block" id="warningLight" >
+                        <img class="element-icon" src="sunny.png" alt="">
+                        <h4 class="element-text">
+                            <p class="right5px">Ánh sáng: </p>
+                            <p id="currentLight"></p>
+                            <p>Lux</p>
+                        </h4>
+                    </div>
+
+                    <div class="element-block" style="background-color: #5c7ee3;">
+                        <img class="element-icon" src="drop.png" alt="">
+                        <h4 class="element-text">
+                            <p class="right5px">Độ ẩm: </p>
+                            <p id="currentHumi"> </p>
+                            <p>%</p>
+                        </h4>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <figure class="highcharts-figure">
+            <div id="container"></div>
+        </figure>
+    </div>
+    <div class="right-block">
+        <div class="element-block" style="background-color: #13adc4;">
+            <img class="element-icon" src="night-symbol-of-the-moon-with-a-cloud-and-stars.png" alt="">
+            <div class="element-text">
+                <p id="time"></p>
+            </div>
+        </div>
+        <div>
+            <div class="main-title">
+                LIGHT
+            </div>
+            <div class="element-container">
+                <div  id="den" class="light-box appliances width100 center turn-off ">
+                    <input class="checkbox" type="checkbox" value="1" name="" onclick="Light();" id="checkBox_light">
+                    <label for="checkBox_light"></label>
+                    <img class="light-icon" id="light_img" src="off.svg" alt="">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="main-title">
+                TELEVISON
+            </div>
+            <div class="element-container">
+                <div id ="TV" class="tivi-box appliances width100 center turn-off">
+                    <input class="checkbox" type="checkbox" value="1" name="" onclick="TV()" id="checkBox_tv">
+                    <label for="checkBox_tv"></label>
+                    <img class="tv-icon" id="tv_img" src="tv-off.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        var chart = Highcharts.chart('container', {
+            chart: {
+                zoomType: 'xy'
+            },
+            title: {
+                text: 'Temp - Humi - Light Chart'
+            },
+
+            xAxis: [{
+                categories: [],
+                tickWidth: 1,
+                tickLength: 20
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                title: {
+                    text: 'Temperature (°C)',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+            },{ // Primary yAxis
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[2]
+                    }
+                },
+                title: {
+                    text: 'Light (lux)',
+                    style: {
+                        color: Highcharts.getOptions().colors[2]
+                    }
+                },
+                opposite: true
+            }, 
+              { // Secondary xAxis
+                title: {
+                    text: 'Humidity(%)',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                // opposite: true
+            },  
+            ],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 750,
+                verticalAlign: 'top',
+                y: 300,
+                floating: true,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || // theme
+                    'rgba(255,255,255,0.25)'
+            },
+            series: [{
+                name: 'Humidity',
+                type: 'line',
+                data: [],
+                tooltip: {
+                    valueSuffix: '%'
+                },
+                zones: [{
+                    value: 10,
+                    color: '#32CD32'
+                }, {
+                    value: 30,
+                    color: '#32CD32'
+                }, {
+                    color: '#32CD32'
+                }],
+
+            }, {
+                name: 'Temperature',
+                type: 'line',
+                data: [],
+                tooltip: {
+                    valueSuffix: '°C'
+                },
+                zones: [{
+                    value: 10,
+                    color: '#800080'
+                }, {
+                    value: 30,
+                    color: '#800080'
+                }, {
+                    color: '#800080'
+                }],
+            },{
+                name: 'Light',
+                type: 'line',
+                yAxis: 1,
+                data: [],
+                tooltip: {
+                    valueSuffix: 'lux'
+                },
+                zones: [{
+                    value: 100,
+                    color: '#FF0000'
+                }, {
+                    value: 1000,
+                    color: '#FF0000'
+                }, {
+                    color: '#FF0000'
+                }],
+                
+            }
+        ],
+        });
+
+        socket.on("server-send-humi_graph", function (data) {
+            chart.series[0].setData(data);
+        });
+
+        socket.on("server-send-temp_graph", function (data) {
+            chart.series[1].setData(data);
+        });
+
+        socket.on("server-send-light_graph", function (data) {
+            chart.series[2].setData(data);
+        });
+
+        socket.on("server-send-date_graph", function (data) {
+            chart.xAxis[0].setCategories(data);
+        });
+
+        // ------------- RTC ------------
+        var timeDisplay = document.getElementById("time");
+
+        function refreshTime() {
+            var dateString = new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
+            var formattedString = dateString.replace(", ", " - ");
+            timeDisplay.innerHTML = formattedString;
+        }
+
+        setInterval(refreshTime, 1000);
+    // ------------------------------
+
+
+    </script>
+</div>
+
+<!-- //    Warning mode
+var warningTemp = document.getElementById("warningLight")
+var sttlight = document.getElementById("den")
+var stttv = document.getElementById("TV")
+if(data.light <50){
+    warningTemp.style.backgroundColor =  "black"
+}
+else if (data.light >50 && data.light <1000){
+    warningTemp.style.backgroundColor =  "green"
+}
+else if (data.light >1000 ){
+    warningTemp.style.backgroundColor =  "yellow"
+}
+else if(data.light > 100 && data.light < 300){
+    warningTemp.style.backgroundColor = "red"
+}
+else if(data.light > 2000){
+    warningTemp.style.backgroundColor = "violet"
+}
+
+if(data.light < 50){
+    // alert("TOO DARK")
+    document.getElementById("light_img").src='on.svg'
+    document.getElementById("tv_img").src="tv-on.png"
+    socket.emit("LightChange", "on")
+    socket.emit("TVChange", "on")
+    sttlight.style.backgroundColor =  "Green"
+    stttv.style.backgroundColor = "Green"
+    // warningTemp.classList.add("warning-mode-on")
+  
+}
+else if(data.light > 2000){
+    document.getElementById("light_img").src='off.svg'
+    document.getElementById("tv_img").src="tv-off.png"
+    socket.emit("LightChange", "off")
+    socket.emit("TVChange", "off")
+    sttlight.style.backgroundColor =  "Gray"
+    stttv.style.backgroundColor = "Gray"
+    // warningTemp.classList.remove("warning-mode-on")
+} -->
+
+
+<!-- // ---- RTC ----
+//    Warning mode
+// var sttlight = document.getElementById("den")
+// var checkBox = document.getElementById("checkBox_tv");
+// if (data.light < 50 &&sttden==0) {
+        
+//     document.getElementById("light_img").src='on.svg'
+//     document.getElementById("tv_img").src='tv-on.png'
+//     socket.emit("LightChange", "on")
+//     socket.emit("TVChange", "on")
+//     sttden=1;
+//     checkBox.checked = false;
+    
+//     }
+    
+//     if(data.light > 2000 && sttden ==1) {
+//         document.getElementById("light_img").src='off.svg'
+//         document.getElementById("tv_img").src='tv-off.png'
+//         socket.emit("LightChange", "off")
+//         socket.emit("TVChange", "off")
+//         sttden = 0;
+//         checkBox.checked = false;
+//     }
+
+    // if(data.light < 50){
+    //     document.getElementById("light_img").src='on.svg'
+    //     socket.emit("LightChange", "on")
+        
+    // }
+    // if(data.light > 1000){
+    //     document.getElementById("light_img").src='off.svg'
+    //         socket.emit("LightChange", "off")
+        
+    // }
+    //  if {
+    //     document.getElementById("light_img").src='off.svg'
+    //     socket.emit("LightChange", "off")
+    //     warningTemp.classList.remove("warning-mode-on")
+    // }
+    // if {
+    //     var result2 = confirm(" Do you want to turn off the light? ")
+    //     if(result2){
+    //         document.getElementById("light_img").src='off.svg'
+    //         socket.emit("LightChange", "off")
+    //         sttlight.style.backgroundColor =  "#25384e"
+            
+    //     }
+    //     else{
+    //         document.getElementById("light_img").src='on.svg'
+    //         checkBox.checked = true
+
+    //     }
+
+    // }
+    // var sttden=0;
+// function Botton() {
+//     var checkBox = document.getElementById("checkBox_botton");
+//     var sttlight = document.getElementById("den")
+//     var stttv = document.getElementById("TV")
+//     if (checkBox.checked == true &&sttden==0) {
+        
+//         document.getElementById("light_img").src='on.svg'
+//         socket.emit("LightChange", "on")
+//         sttlight.style.backgroundColor =  "Green"
+//         document.getElementById("tv_img").src="tv-on.png"
+//         socket.emit("TVChange", "on")
+//         stttv.style.backgroundColor = "Green"
+//         sttden=1;
+
+//         checkBox.checked = false;
+        
+//         }
+        
+//         if(checkBox.checked == true && sttden ==1) {
+//             document.getElementById("light_img").src='off.svg'
+//             document.getElementById("tv_img").src='tv-off.png'
+//             socket.emit("LightChange", "off")
+//             socket.emit("TVChange", "off")
+//             sttlight.style.backgroundColor =  "Gray"
+//             stttv.style.backgroundColor = "Gray"
+//             sttden = 0;
+//             checkBox.checked = false;
+//         }
+// } -->
+
